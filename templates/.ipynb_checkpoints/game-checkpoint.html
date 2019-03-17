@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    h2 {margin:0;}
+    body {font-family: verdana;}
+    .timeline{margin: auto;
+              width: 50%;
+              text-align: center;
+              padding: 10px;}
+    .inbetween{
+        margin:auto;
+            vertical-align: middle;
+            height: 200px;
+            width: 25px;
+            display: inline-block;}
+    .inbetween:hover{width:50px;}
+    .movie {vertical-align: middle;
+            height: 200px;
+            width: 125px;
+            font-size: 12px;
+            box-shadow: 2px 4px 8px 0 grey;
+            text-align: center;
+            display: inline-block;
+            padding:5px;
+            border-radius:5px;}
+    .selected {box-shadow:4px 8px 16px 0 black;}
+    
+    div.unknown div {-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+                     filter: grayscale(100%);}
+    div.unknown p {visibility:hidden;}
+    div.known div {-webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
+            filter: grayscale(0%);}
+    .movie:hover {opacity:50;
+                  filter: alpha(opacity=50); /* For IE8 and earlier */}
+    
+    img:hover {
+  opacity: 0.5;
+  filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+    
+</style>
+</head>
+    
+<body>
+    <h2> Timeline </h2>
+    <div class="known timeline">
+        {% for key, movie in timeline.iterrows() %}
+        <div class='inbetween' onclick=placeMovie() id={{ key }}></div>
+    
+        <div class="movie" yr={{ movie.startYear }}>
+            <img src={{ movie.posterURL }}</img>
+            <br>
+            {{ movie.primaryTitle }}
+            <p>{{ movie.startYear }}</p>
+        </div>
+        {% endfor %}
+    <div class='inbetween' id={{ timeline|length }} onclick=placeMovie() ></div>
+    </div>
+    <h2> In The Wings </h2>
+    <div class="unknown timeline">
+        {% for key, movie in wings.iterrows() %}
+        <div class="movie" id={{ movie.tconst }} onclick=selectWingMovie()>
+            <img src={{ movie.posterURL }}</img>
+            <br>
+            {{ movie.primaryTitle }}
+            <p>{{ movie.startYear }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+
+
+<script>
+function isEmpty(obj) {
+    // Util function to see if list is empty
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+    
+function selectWingMovie() {
+    // Select movie in wings that user clicked on
+    var unselect = document.getElementsByClassName("selected");
+    console.log(unselect);
+    if (!isEmpty(unselect)) {
+        var idx;
+        for (idx = 0; idx < unselect.length; idx++) { 
+            if (!(unselect[idx] == event.currentTarget)) {
+                unselect[idx].classList.toggle("selected");
+            }
+        }
+    }
+    var select = event.currentTarget
+    select.classList.toggle("selected");
+}
+    
+    
+function placeMovie() {
+    // Get movies user placed selected movie in between
+    var select = document.getElementsByClassName("selected");
+    if (!isEmpty(select)) {
+        var wing_movie = document.getElementsByClassName("selected");
+        console.log(wing_movie)
+        var element = event.currentTarget
+    }
+
+}
+</script>
+

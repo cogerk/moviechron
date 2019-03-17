@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- saved from url=(0085)https://pleportz.github.io/drag-and-drop-demos/drag-and-drop-react-dragula/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Drag &amp; Drop - Dragula for React</title>
+    <link rel="stylesheet" href="./Drag &amp; Drop - Dragula for React_files/style.css">
+    <link href="./Drag &amp; Drop - Dragula for React_files/dragula.min.css" rel="stylesheet" type="text/css">
+  <script>"use strict";
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Anagram = function (_React$Component) {
+  _inherits(Anagram, _React$Component);
+
+  function Anagram() {
+    _classCallCheck(this, Anagram);
+
+    return _possibleConstructorReturn(this, (Anagram.__proto__ || Object.getPrototypeOf(Anagram)).apply(this, arguments));
+  }
+
+  _createClass(Anagram, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        { className: "anagram-container" },
+        React.createElement(
+          "div",
+          { className: "letter-outter-container" },
+          React.createElement(
+            "div",
+            { className: "letter-container" },
+            "S"
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "letter-outter-container" },
+          React.createElement(
+            "div",
+            { className: "letter-container" },
+            "M"
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "letter-outter-container" },
+          React.createElement(
+            "div",
+            { className: "letter-container" },
+            "I"
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "letter-outter-container" },
+          React.createElement(
+            "div",
+            { className: "letter-container" },
+            "L"
+          )
+        ),
+        React.createElement(
+          "div",
+          { className: "letter-outter-container" },
+          React.createElement(
+            "div",
+            { className: "letter-container" },
+            "E"
+          )
+        )
+      );
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var container = ReactDOM.findDOMNode(this);
+      reactDragula([container]);
+    }
+  }]);
+
+  return Anagram;
+}(React.Component);
+
+;
+ReactDOM.render(React.createElement(Anagram, null), document.getElementById('anagram'));
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIklubGluZSBCYWJlbCBzY3JpcHQiXSwibmFtZXMiOlsiQW5hZ3JhbSIsImNvbnRhaW5lciIsIlJlYWN0RE9NIiwiZmluZERPTU5vZGUiLCJyZWFjdERyYWd1bGEiLCJSZWFjdCIsIkNvbXBvbmVudCIsInJlbmRlciIsImRvY3VtZW50IiwiZ2V0RWxlbWVudEJ5SWQiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7SUFDWUEsTzs7Ozs7Ozs7Ozs7NkJBQ0s7QUFDUCxhQUFPO0FBQUE7QUFBQSxVQUFLLFdBQVUsbUJBQWY7QUFDSDtBQUFBO0FBQUEsWUFBSyxXQUFVLHlCQUFmO0FBQ0U7QUFBQTtBQUFBLGNBQUssV0FBVSxrQkFBZjtBQUFBO0FBQUE7QUFERixTQURHO0FBSUg7QUFBQTtBQUFBLFlBQUssV0FBVSx5QkFBZjtBQUNFO0FBQUE7QUFBQSxjQUFLLFdBQVUsa0JBQWY7QUFBQTtBQUFBO0FBREYsU0FKRztBQU9IO0FBQUE7QUFBQSxZQUFLLFdBQVUseUJBQWY7QUFDRTtBQUFBO0FBQUEsY0FBSyxXQUFVLGtCQUFmO0FBQUE7QUFBQTtBQURGLFNBUEc7QUFVSDtBQUFBO0FBQUEsWUFBSyxXQUFVLHlCQUFmO0FBQ0U7QUFBQTtBQUFBLGNBQUssV0FBVSxrQkFBZjtBQUFBO0FBQUE7QUFERixTQVZHO0FBYUg7QUFBQTtBQUFBLFlBQUssV0FBVSx5QkFBZjtBQUNFO0FBQUE7QUFBQSxjQUFLLFdBQVUsa0JBQWY7QUFBQTtBQUFBO0FBREY7QUFiRyxPQUFQO0FBaUJEOzs7d0NBQ21CO0FBQ2xCLFVBQUlDLFlBQVlDLFNBQVNDLFdBQVQsQ0FBcUIsSUFBckIsQ0FBaEI7QUFDQUMsbUJBQWEsQ0FBQ0gsU0FBRCxDQUFiO0FBQ0Q7Ozs7RUF2Qm1CSSxNQUFNQyxTOztBQXdCM0I7QUFDREosU0FBU0ssTUFBVCxDQUFnQixvQkFBQyxPQUFELE9BQWhCLEVBQTRCQyxTQUFTQyxjQUFULENBQXdCLFNBQXhCLENBQTVCIiwiZmlsZSI6IklubGluZSBCYWJlbCBzY3JpcHQiLCJzb3VyY2VzQ29udGVudCI6WyJcbiAgICAgIGNsYXNzIEFuYWdyYW0gZXh0ZW5kcyBSZWFjdC5Db21wb25lbnQge1xuICAgICAgICByZW5kZXIoKSB7XG4gICAgICAgICAgcmV0dXJuIDxkaXYgY2xhc3NOYW1lPVwiYW5hZ3JhbS1jb250YWluZXJcIj5cbiAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJsZXR0ZXItb3V0dGVyLWNvbnRhaW5lclwiPlxuICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibGV0dGVyLWNvbnRhaW5lclwiPlM8L2Rpdj5cbiAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibGV0dGVyLW91dHRlci1jb250YWluZXJcIj5cbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxldHRlci1jb250YWluZXJcIj5NPC9kaXY+XG4gICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxldHRlci1vdXR0ZXItY29udGFpbmVyXCI+XG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJsZXR0ZXItY29udGFpbmVyXCI+STwvZGl2PlxuICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJsZXR0ZXItb3V0dGVyLWNvbnRhaW5lclwiPlxuICAgICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibGV0dGVyLWNvbnRhaW5lclwiPkw8L2Rpdj5cbiAgICAgICAgICAgICAgPC9kaXY+XG4gICAgICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibGV0dGVyLW91dHRlci1jb250YWluZXJcIj5cbiAgICAgICAgICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImxldHRlci1jb250YWluZXJcIj5FPC9kaXY+XG4gICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDwvZGl2PjtcbiAgICAgICAgfVxuICAgICAgICBjb21wb25lbnREaWRNb3VudCgpIHtcbiAgICAgICAgICB2YXIgY29udGFpbmVyID0gUmVhY3RET00uZmluZERPTU5vZGUodGhpcyk7XG4gICAgICAgICAgcmVhY3REcmFndWxhKFtjb250YWluZXJdKTtcbiAgICAgICAgfVxuICAgICAgfTtcbiAgICAgIFJlYWN0RE9NLnJlbmRlcig8QW5hZ3JhbS8+LCBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYW5hZ3JhbScpKTtcbiAgICAiXX0=</script></head>
+  <body>
+
+    <div class="drag-drop-header">
+      <h1>DRAG &amp; DROP - DRAGULA FOR REACT</h1>
+    </div>
+    <div id="anagram"><div class="anagram-container"><div class="letter-outter-container"><div class="letter-container">S</div></div><div class="letter-outter-container"><div class="letter-container">M</div></div><div class="letter-outter-container"><div class="letter-container">I</div></div><div class="letter-outter-container"><div class="letter-container">L</div></div><div class="letter-outter-container"><div class="letter-container">E</div></div></div></div>
+
+    <script src="./Drag &amp; Drop - Dragula for React_files/react.development.js"></script>
+    <script src="./Drag &amp; Drop - Dragula for React_files/react-dom.development.js"></script>
+    <script src="./Drag &amp; Drop - Dragula for React_files/babel.min.js"></script>
+    <script src="./Drag &amp; Drop - Dragula for React_files/react-dragula.js"></script>
+    <script type="text/babel">
+      class Anagram extends React.Component {
+        render() {
+          return <div className="anagram-container">
+              <div className="letter-outter-container">
+                <div className="letter-container">S</div>
+              </div>
+              <div className="letter-outter-container">
+                <div className="letter-container">M</div>
+              </div>
+              <div className="letter-outter-container">
+                <div className="letter-container">I</div>
+              </div>
+              <div className="letter-outter-container">
+                <div className="letter-container">L</div>
+              </div>
+              <div className="letter-outter-container">
+                <div className="letter-container">E</div>
+              </div>
+          </div>;
+        }
+        componentDidMount() {
+          var container = ReactDOM.findDOMNode(this);
+          reactDragula([container]);
+        }
+      };
+      ReactDOM.render(<Anagram/>, document.getElementById('anagram'));
+    </script>
+  
+
+</body></html>
