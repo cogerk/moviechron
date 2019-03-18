@@ -43,10 +43,11 @@
 </head>
     
 <body>
+    {{ var1 }}
     <h2> Timeline </h2>
     <div class="known timeline">
         {% for key, movie in timeline.iterrows() %}
-        <div class='inbetween' onclick=placeMovie() id={{ key }}></div>
+        <div class='inbetween' onclick=placeMovie(this.id) id={{ "timeline_" + key|string }}></div>
     
         <div class="movie" yr={{ movie.startYear }}>
             <img src={{ movie.posterURL }}</img>
@@ -55,12 +56,12 @@
             <p>{{ movie.startYear }}</p>
         </div>
         {% endfor %}
-    <div class='inbetween' id={{ timeline|length }} onclick=placeMovie() ></div>
+    <div class='inbetween' id={{ "timeline_" + timeline|length|string }} onclick=placeMovie(this.id) ></div>
     </div>
     <h2> In The Wings </h2>
     <div class="unknown timeline">
         {% for key, movie in wings.iterrows() %}
-        <div class="movie" id={{ movie.tconst }} onclick=selectWingMovie()>
+        <div class="movie" id={{ "wings_" + key|string }} onclick=selectWingMovie()>
             <img src={{ movie.posterURL }}</img>
             <br>
             {{ movie.primaryTitle }}
@@ -72,6 +73,8 @@
 </html>
 
 
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
 <script>
 function isEmpty(obj) {
@@ -86,7 +89,6 @@ function isEmpty(obj) {
 function selectWingMovie() {
     // Select movie in wings that user clicked on
     var unselect = document.getElementsByClassName("selected");
-    console.log(unselect);
     if (!isEmpty(unselect)) {
         var idx;
         for (idx = 0; idx < unselect.length; idx++) { 
@@ -100,13 +102,27 @@ function selectWingMovie() {
 }
     
     
-function placeMovie() {
+function placeMovie(clicked_id) {
     // Get movies user placed selected movie in between
     var select = document.getElementsByClassName("selected");
     if (!isEmpty(select)) {
-        var wing_movie = document.getElementsByClassName("selected");
-        console.log(wing_movie)
-        var element = event.currentTarget
+        console.log(select[0].id)
+        console.log(clicked_id)
+        
+        $.ajax({
+            url: '/send_guess',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                guess_id:select[0].id,
+                location_id:clicked_id
+        }),
+            success: function(data){document.write(data)},
+        dataType: 'html'
+        
+    });
+      
+        
     }
 
 }
