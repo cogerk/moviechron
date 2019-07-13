@@ -1,0 +1,29 @@
+{% macro render_board(game) %}
+    <div class='game', id='{{game.game_id}}'>
+        <h2> Timeline </h2>
+        <div class='timeline pile'>
+            {% for key, movie in game.timeline.iterrows() %}
+            <span class='inbetween' onclick=placeMovie(this.id) id='{{ "timeline_" + key|string }}'></span>
+            <span class='movie'>
+                <img src='{{ movie.posterURL }}'</img>
+                <br>
+                {{ movie.primaryTitle }}
+                <p class='year'>{{ movie.startYear }}</p>
+            </span>
+            {% endfor %}
+            <span class='inbetween' id='{{ "timeline_" + game.timeline|length|string }}' onclick=placeMovie(this.id)>
+            </span>
+        </div>
+        <h2> In The Wings </h2>
+        <div class='wings pile'>
+            {% for key, movie in game.wings.iterrows() %}
+            <span class='movie' id='{{ "wings_" + key|string }}' onclick=selectWingMovie()>
+                <img src='{{ movie.posterURL }}'></img>
+                <br>
+                {{ movie.primaryTitle }}
+                <p class='year'>{{ movie.startYear }}</p>
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+{% endmacro %}
