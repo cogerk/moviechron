@@ -52,6 +52,7 @@ class Game:
         """
         Given user selection from wings and guessed location, determine if guess is correct
         """
+        self.timeline = self.timeline.sort_values(by='releaseDate').reset_index(drop=True)
         # Get date of selected movie from the wings
         to_place = self.wings.iloc[int(wing_select)]
         true_date = to_place['startYear']
@@ -62,28 +63,17 @@ class Game:
             compare_date_below = -float('inf')
             compare_date_above = int(self.timeline.iloc[0]['startYear'])
             compare_above = self.timeline.iloc[0]
-            print('After: '+str(compare_date_below))
-            print('Before: '+str(compare_date_above))
-            print(compare_above)
         elif location_guess > (len(self.timeline)-1):
             compare_below = self.timeline.iloc[len(self.timeline)-1]
             compare_date_below = int(self.timeline.iloc[len(self.timeline)-1]['startYear'])
             compare_date_above = float('inf')
-            print('After: '+str(compare_date_below))
-            print(compare_below)
-            print('Before: '+str(compare_date_above))
         else:
             compare_below = self.timeline.iloc[location_guess-1]
             compare_above = self.timeline.iloc[location_guess]
             compare_date_below = int(self.timeline.iloc[location_guess-1]['startYear'])
             compare_date_above = int(self.timeline.iloc[location_guess]['startYear'])
-            print('After: '+str(compare_date_below))
-            print(compare_below)
-            print('Before: ' +str(compare_date_above))
-            print(compare_above)
         # Determine if guess is correct
         if compare_date_below <= true_date <= compare_date_above:
-            messages = ['Great Work!']
             # Update Timeline & deck status if guess correct
             self.timeline = self.timeline.append(to_place)
             # 'T' means the card is in the timeline
@@ -94,20 +84,46 @@ class Game:
             # If same year, compare on release date for fun
             if compare_date_below == true_date:
                 """Code for close ones"""
+                compare_str = ['<i>' + compare_below['primaryTitle'] + \
+                               '</i> was released on ' + \
+                               pd.to_datetime(compare_below['releaseDate']).strftime('%B, %-d') +\
+                               ' and <i>' + to_place['primaryTitle'] +'</i> was released on ' + \
+                               pd.to_datetime(to_place['releaseDate']).strftime('%B, %-d') + '.']
+                
                 if compare_below['releaseDate'] < to_place['releaseDate']:
-                    messages = messages + ['A Close one, and you nailed it!']
+                    messages = ['A close one, and you nailed it!'] + compare_str
                     """Code for close calls here"""
+                elif compare_below['releaseDate'] > to_place['releaseDate']:
+                    messages = ['Close enough!'] + compare_str
                 else:
-                    messages = messages + ['close enough!']
+                    messages = ['Fun Fact!', '<i>' +
+                                compare_below['primaryTitle'] + '</i> and <i>' + \
+                                to_place['primaryTitle'] + '</i> were both released on ' + \
+                                pd.to_datetime(compare_below['releaseDate']).strftime('%B, %-d')]
             elif compare_date_above == true_date:
+                compare_str =  ['<i>' + compare_above['primaryTitle'] +\
+                               '</i> was released on ' +\
+                                pd.to_datetime(compare_above['releaseDate']).strftime('%B, %-d')+\
+                               ' and <i>' + to_place['primaryTitle'] + \
+                               '</i> was released on ' +\
+                                pd.to_datetime(to_place['releaseDate']).strftime('%B, %-d') +'.']
                 if to_place['releaseDate'] < compare_above['releaseDate']:
-                    messages = messages + ['A Close one, and you nailed it!']
+                    messages = ['A close one, and you nailed it!'] + compare_str
                     """Code for close calls here"""
+                elif to_place['releaseDate'] > compare_above['releaseDate']:
+                    messages = ['Close enough!'] + compare_str
                 else:
-                    messages = messages + ['close enough!']
+                    messages = ['Fun Fact!', '<i>' +
+                                compare_above['primaryTitle'] + '</i> and <i>' + \
+                                 to_place['primaryTitle'] + '</i> were both released on ' + \
+                                 pd.to_datetime(compare_above['releaseDate']).strftime('%B, %-d')]
+            else:
+                messages = ['Great Work!']
         else:
             # Update deck status if incorrect
-            messages = ['Nope.', to_place['primaryTitle']+' came out in '+str(int(true_date))]
+            messages = ['Nope.', 
+                        '<i>'+to_place['primaryTitle']+'</i> came out in ' + \
+                        str(int(true_date))]
             # 'I' means the card is discarded because of incorrect guess
             self.deck.loc[to_place.tconst == self.deck.tconst, 'status'] = 'I'
             """
@@ -126,7 +142,8 @@ class Game:
         
         # Update status string & sort timeline
         status_string = ''.join(list(self.deck.status))
-        self.game_id = self.game_diff + '_' + format(self.deck_size, '03d') + '_' + str(self.deck_id) + '_' + status_string[1:].rstrip('D')
+        self.game_id = self.game_diff + '_' + format(self.deck_size, '03d') + '_' + \
+        str(self.deck_id) + '_' + status_string[1:].rstrip('D')
         self.timeline = self.timeline.sort_values(by='releaseDate').reset_index(drop=True)
         return self, messages
     

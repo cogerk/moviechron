@@ -2,38 +2,64 @@
 {% from "_helpers.html" import render_board %}
 <html>
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+    <!-- bootstrap library -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <style>
         h2 {margin:0;}
-        body {font-family: verdana;}
+        body {font-family: verdana;
+              margin:5px;}
         .pile{margin: auto;
-                  width: 50%;
-                  text-align: center;
-                  padding: 10px;}
-        .inbetween{
-            margin:auto;
+                overflow-x: scroll;
+                overflow-y: hidden;
+                white-space: nowrap;
+                text-align: center;
+            padding: 10px;}
+        .pile::-webkit-scrollbar {-webkit-appearance: none;}
+        .pile::-webkit-scrollbar:vertical {width: 11px;}
+        .pile::-webkit-scrollbar:horizontal { height: 11px;}
+        .pile::-webkit-scrollbar-thumb { border-radius: 8px;
+                border: 2px solid white; 
+                background-color: rgba(0, 0, 0, .5);}
+        .pile::-webkit-scrollbar-track {  background-color: #fff; 
+                border-radius: 8px; }
+        .inbetween.first{background-color:lightblue;
+                 border-radius:5px;}
+        .inbetween{margin:auto;
                 vertical-align: middle;
-                height: 200px;
+                height: 150px;
                 width: 25px;
                 display: inline-block;}
         .inbetween:hover{width:50px;}
         .movie {vertical-align: middle;
-                height: 200px;
+                height: 150px;
                 width: 125px;
                 font-size: 12px;
                 box-shadow: 2px 4px 8px 0 grey;
                 text-align: center;
                 display: inline-block;
                 padding:5px;
-                border-radius:5px;}
+                border-radius:5px;
+                white-space: normal}
         .selected {box-shadow:4px 8px 16px 0 black;}
-
+        p.year{margin:0;
+               bottom:5px;
+               vertical-align: bottom;}
         div.wings span {-webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
                          filter: grayscale(100%);}
         div.wings p.year {visibility:hidden;}
         .movie:hover {opacity:50;
                       filter: alpha(opacity=50); /* For IE8 and earlier */}
 
+         img {
+          max-width: 50%;
+          height: auto;
+        }
         img:hover {
       opacity: 0.5;
       filter: alpha(opacity=50); /* For IE8 and earlier */
@@ -42,13 +68,10 @@
 </head>
     
 <body>
-    {{render_board(game)}}
+    {{render_board(game, messages)}}
 </body>
 </html>
 
-
-
-<script src='http://code.jquery.com/jquery-1.11.0.min.js'></script>
 
 <script>
 function isEmpty(obj) {
@@ -80,7 +103,7 @@ function placeMovie(clicked_id) {
     // Get movies user placed selected movie in between
     var select = document.getElementsByClassName("selected");
     if (!isEmpty(select)) {
-        
+        console.log(clicked_id)
         $.ajax({
             url: '/send_guess',
             type: 'POST',
