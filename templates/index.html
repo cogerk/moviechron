@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- bootstrap library -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    h2 {margin:0;}
+    body {font-family: verdana;
+          margin:5px;}
+    * {box-sizing: border-box;}
+
+    /* The popup form - hidden by default */
+    .row{
+        width:100%;
+    }
+.form-popup {
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+/* Add styles to the form container */
+.form-container {
+  margin:0;
+  padding: 10px;
+  background-color: white;
+    
+}
+    
+.form-control::-webkit-input-placeholder { color: #555; }  /* WebKit, Blink, Edge */
+.form-control:-moz-placeholder { color: #555; }  /* Mozilla Firefox 4 to 18 */
+.form-control::-moz-placeholder { color: #555; }  /* Mozilla Firefox 19+ */
+.form-control:-ms-input-placeholder { color: #555; }  /* Internet Explorer 10-11 */
+.form-control::-ms-input-placeholder { color: #555; }  /* Microsoft Edge */  
+/* Full-width input fields */
+.form-container input[type=number], .form-container select {
+  width: 100%;
+  height: 30px;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+/* When the inputs get focus, do something */
+.form-container input[type=number]:focus{
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 5px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+</style>
+</head>
+<body onload='setupGame()'>
+
+<h2>MovieChron</h2>
+<p>A movie release date trivia game!</p>
+<div class="row" id='form-row'>
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+  <div class="form-popup" id="game-setup">
+      <form action="{{ url_for('deal') }}" class="form-container" method='post'>
+        <h2>Setup New Game</h2><br>
+
+          <label for="difficulty">Select Difficulty</label>
+          <select required class="form-control" name="difficulty" 
+                  placeholder='Select Difficulty'>
+            <option disabled selected value=''>Level of Movie Obscurity</option>
+            <option value='E'>Easy</option>
+            <option value='M'>Medium</option>
+            <option value='H'>Hard</option>
+            <option value='I'>Super Hard</option>
+          </select>
+
+        <label for="size">Game Length</label>
+        <input type="number" min='0' class="form-control" placeholder="# of Movies To Play With" name="size" required>
+
+        <button type="submit" class="btn">Begin</button>
+      </form>
+    </div>
+    </div>
+    <div class="col-sm-4"></div>
+</div>
+
+<script>
+function setupGame() {
+  document.getElementById("form-row").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+</body>
+</html>
