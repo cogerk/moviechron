@@ -26,11 +26,11 @@ def build_deck(game_id, difficulty, deck_size):
     elif difficulty == 'H':
         all_movies = hard_df
     elif difficulty == 'I':
-        deck = impo_df
+        all_movies = impo_df
     else:
         all_movies = easy_df
         warnings.warn('Invalid difficulty, using easy.', SyntaxWarning)
-    deck = all_movies.sample(deck_size, random_state=game_id)
+    deck= all_movies.sample(deck_size+1, random_state=game_id).reset_index(drop=True)
     #years = deck.startYear.unique().sample(self.deck_size, random_state=self.deck_id)
     
     return deck
@@ -49,9 +49,12 @@ class Game:
         self.deck_id = int(game_id.split('_')[2])
         # Get deck using random state & game difficulty from game id
         self.deck = build_deck(self.deck_id, self.difficulty, self.deck_size)
+        for col in self.deck: 
+            print(col) 
         # Game status defined by game id
         status = game_id.split('_')[3] 
-        self.deck['status']=['T'] + list(status) + ['D'] * (self.deck_size-len(status)-1)
+        print(['T'] + list(status) + ['D'] * (self.deck_size-len(status)-1))
+        self.deck['status']=['T'] + list(status) + ['D'] * (self.deck_size-len(status))
         self.deck_loc = len(status)+1 
         # 'T' means the card is in the timeline
         self.timeline = self.deck[self.deck['status'] == 'T'].reset_index(drop=True)
@@ -163,10 +166,11 @@ class Game:
         Given a deck ID and game status string, define all game attributes
         """
         deck_size = deck_size 
+        
         # Unqiue deck ID used to draw cards
         deck_id = random.randint(100000000, 1000000000)
         # Game status contains deck size, deck ID and game status string
-        game_id = difficulty + '_' + format(deck_size, '03d') + '_' + str(deck_id) +'_WWW'
+        game_id = difficulty + '_' + format(deck_size, '03d') + '_' + str(deck_id) +'_WWW'+ 'D' * (deck_size-3)
         self = Game(game_id)
         return self
         
