@@ -3,15 +3,37 @@ import warnings
 import random
 
 easy_df = pd.read_csv('data/selected_films_easy.tsv', sep='\t', index_col=0)
-med_df = pd.read_csv('data/selected_films_easy.tsv', sep='\t', index_col=0)
+medi_df = pd.read_csv('data/selected_films_easy.tsv', sep='\t', index_col=0)
 hard_df = pd.read_csv('data/selected_films_easy.tsv', sep='\t', index_col=0)
-imp_df = pd.read_csv('data/selected_films_easy.tsv', sep='\t', index_col=0)
+impo_df = pd.read_csv('data/selected_films_easy.tsv', sep='\t', index_col=0)
+# TODO: Fix spacing #Big poster, text on hover w/ alpha
 # TODO: Replace above tsv files with respective difficulty files
-# TODO: User can choose difficulty and deck size
-# TODO: points system, multiplayer, save game
-# TODO: Clean up javscript
+#Exception if release date’s year doesn’t match startYear
+#Algorithm for more evenly spread release dates 
+# TODO: points system, 
+# TODO: multiplayer, 
+# TODO: save game
 # TODO: Clean up database
-# TODO: Messages and game complete 
+# TODO: Game complete 
+#In the wings = On Deck
+
+
+def build_deck(game_id, difficulty, deck_size):
+    if difficulty == 'E':
+        all_movies = easy_df#.sample(self.deck_size, random_state=self.deck_id).reset_index(drop=True)
+    elif difficulty == 'M':
+        all_movies = medi_df
+    elif difficulty == 'H':
+        all_movies = hard_df
+    elif difficulty == 'I':
+        deck = impo_df
+    else:
+        all_movies = easy_df
+        warnings.warn('Invalid difficulty, using easy.', SyntaxWarning)
+    deck = all_movies.sample(deck_size, random_state=game_id)
+    #years = deck.startYear.unique().sample(self.deck_size, random_state=self.deck_id)
+    
+    return deck
 
 class Game:
     """
@@ -20,23 +42,13 @@ class Game:
     def __init__(self, game_id):
         self.game_id = game_id
         # Game difficult defined by game id
-        self.game_diff = game_id.split('_')[0]
+        self.difficulty = game_id.split('_')[0]
         # deck size defined by game id
         self.deck_size = int(game_id.split('_')[1]) 
         # Cards in deck defined by game id
         self.deck_id = int(game_id.split('_')[2])
         # Get deck using random state & game difficulty from game id
-        if self.game_diff == 'E':
-            self.deck = easy_df.sample(self.deck_size, random_state=self.deck_id).reset_index(drop=True)
-        elif self.game_diff == 'M':
-            self.deck = med_df.sample(self.deck_size, random_state=self.deck_id).reset_index(drop=True)
-        elif self.game_diff == 'H':
-            self.deck = hard_df.sample(self.deck_size, random_state=self.deck_id).reset_index(drop=True)
-        elif self.game_diff == 'I':
-            self.deck = imp_df.sample(self.deck_size, random_state=self.deck_id).reset_index(drop=True)
-        else:
-            self.deck = easy_df.sample(self.deck_size, random_state=self.deck_id).reset_index(drop=True)
-            warnings.warn('Invalid difficulty, using easy.', SyntaxWarning)
+        self.deck = build_deck(self.deck_id, self.difficulty, self.deck_size)
         # Game status defined by game id
         status = game_id.split('_')[3] 
         self.deck['status']=['T'] + list(status) + ['D'] * (self.deck_size-len(status)-1)
@@ -45,8 +57,7 @@ class Game:
         self.timeline = self.deck[self.deck['status'] == 'T'].reset_index(drop=True)
         # 'W' means the card is in the wings
         self.wings = self.deck[self.deck['status'] == 'W'].reset_index(drop=True)
-
-        
+    
         
     def make_move(self, wing_select, location_guess):
         """
@@ -86,9 +97,9 @@ class Game:
                 """Code for close ones"""
                 compare_str = ['<i>' + compare_below['primaryTitle'] + \
                                '</i> was released on ' + \
-                               pd.to_datetime(compare_below['releaseDate']).strftime('%B, %-d') +\
+                               pd.to_datetime(compare_below['releaseDate']).strftime('%x') +\
                                ' and <i>' + to_place['primaryTitle'] +'</i> was released on ' + \
-                               pd.to_datetime(to_place['releaseDate']).strftime('%B, %-d') + '.']
+                               pd.to_datetime(to_place['releaseDate']).strftime('%x') + '.']
                 
                 if compare_below['releaseDate'] < to_place['releaseDate']:
                     messages = ['A close one, and you nailed it!'] + compare_str
@@ -99,14 +110,14 @@ class Game:
                     messages = ['Fun Fact!', '<i>' +
                                 compare_below['primaryTitle'] + '</i> and <i>' + \
                                 to_place['primaryTitle'] + '</i> were both released on ' + \
-                                pd.to_datetime(compare_below['releaseDate']).strftime('%B, %-d')]
+                                pd.to_datetime(compare_below['releaseDate']).strftime('%x')]
             elif compare_date_above == true_date:
                 compare_str =  ['<i>' + compare_above['primaryTitle'] +\
                                '</i> was released on ' +\
-                                pd.to_datetime(compare_above['releaseDate']).strftime('%B, %-d')+\
+                                pd.to_datetime(compare_above['releaseDate']).strftime('%x')+\
                                ' and <i>' + to_place['primaryTitle'] + \
                                '</i> was released on ' +\
-                                pd.to_datetime(to_place['releaseDate']).strftime('%B, %-d') +'.']
+                                pd.to_datetime(to_place['releaseDate']).strftime('%x') +'.']
                 if to_place['releaseDate'] < compare_above['releaseDate']:
                     messages = ['A close one, and you nailed it!'] + compare_str
                     """Code for close calls here"""
@@ -116,7 +127,7 @@ class Game:
                     messages = ['Fun Fact!', '<i>' +
                                 compare_above['primaryTitle'] + '</i> and <i>' + \
                                  to_place['primaryTitle'] + '</i> were both released on ' + \
-                                 pd.to_datetime(compare_above['releaseDate']).strftime('%B, %-d')]
+                                 pd.to_datetime(compare_above['releaseDate']).strftime('%x')]
             else:
                 messages = ['Great Work!']
         else:
@@ -142,20 +153,20 @@ class Game:
         
         # Update status string & sort timeline
         status_string = ''.join(list(self.deck.status))
-        self.game_id = self.game_diff + '_' + format(self.deck_size, '03d') + '_' + \
+        self.game_id = self.difficulty + '_' + format(self.deck_size, '03d') + '_' + \
         str(self.deck_id) + '_' + status_string[1:].rstrip('D')
         self.timeline = self.timeline.sort_values(by='releaseDate').reset_index(drop=True)
         return self, messages
     
-    def deal(game_diff, deck_size):
+    def deal(difficulty, deck_size):
         """
         Given a deck ID and game status string, define all game attributes
         """
         deck_size = deck_size 
         # Unqiue deck ID used to draw cards
-        deck_id = random.randint(100000000,1000000000)
+        deck_id = random.randint(100000000, 1000000000)
         # Game status contains deck size, deck ID and game status string
-        game_id = game_diff + '_' + format(deck_size, '03d') + '_' + str(deck_id) +'_WWW'
+        game_id = difficulty + '_' + format(deck_size, '03d') + '_' + str(deck_id) +'_WWW'
         self = Game(game_id)
         return self
         

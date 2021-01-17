@@ -18,8 +18,8 @@
             <span class="{{ns.spacer_class}}" onclick=placeMovie(this.id) id='{{ "timeline_" + key|string }}'></span>
             <span class='movie'>
                 <img src='{{ movie.posterURL }}'</img>
-                <br>
-                {{ movie.primaryTitle }}
+                
+                <p class='title'>{{ movie.primaryTitle }}</p>
                 <p class='year'>{{ movie.startYear }}</p>
             </span>
             {% endfor %}

@@ -11,6 +11,7 @@ def setup_game():
 @app.route('/game',  methods=['GET', 'POST'])
 def deal():
     """Start the game"""
+    print(request.form)
     diff = request.form['difficulty']
     size = int(request.form['size'])
     game= Game.deal(diff, size)
